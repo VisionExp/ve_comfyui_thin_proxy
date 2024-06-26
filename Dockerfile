@@ -27,11 +27,14 @@ WORKDIR /comfyui
 # Install ComfyUI dependencies
 RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 \
     && pip3 install --no-cache-dir xformers==0.0.21 \
-    && pip3 install -r requirements.txt \
+    && pip3 install -r requirements.txt
 
-# Installing ComfyUI Manager
-RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git /custom_nodes/ComfyUI-Manager
-WORKDIR /custom_nodes/ComfyUI-Manager
+WORKDIR /
+
+RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git /comfyui/custom_nodes/ComfyUI-Manager
+
+WORKDIR /comfyui/custom_nodes/ComfyUI-Manager
+
 RUN pip3 install -r requirements.txt
 
 WORKDIR /
