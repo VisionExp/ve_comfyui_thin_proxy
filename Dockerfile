@@ -31,7 +31,7 @@ RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https:/
 
 # Installing ComfyUI Manager
 RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git /custom_nodes/ComfyUI-Manager
-WORKDIR custom_nodes/ComfyUI-Manager
+WORKDIR /custom_nodes/ComfyUI-Manager
 RUN pip3 install -r requirements.txt
 
 WORKDIR /
