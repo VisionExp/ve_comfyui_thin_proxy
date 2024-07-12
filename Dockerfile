@@ -41,6 +41,7 @@ WORKDIR /
 # Add the start and the handler
 ADD start.sh  ./
 ADD checkpoints/ /comfyui/models/checkpoints
+ADD custom_nodes/ /comfyui/custom_nodes/
 RUN chmod +x /start.sh
 
 EXPOSE 8188
