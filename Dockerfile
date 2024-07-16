@@ -32,6 +32,7 @@ RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https:/
 WORKDIR /
 
 RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git /comfyui/custom_nodes/ComfyUI-Manager
+RUN git clone https://github.com/VisionExp/ve_custom_comfyui_nodes.git /comfyui/custom_nodes/ve_custom_comfyui_nodes
 
 WORKDIR /comfyui/custom_nodes/ComfyUI-Manager
 
@@ -41,7 +42,7 @@ WORKDIR /
 # Add the start and the handler
 ADD start.sh  ./
 ADD checkpoints/ /comfyui/models/checkpoints
-ADD custom_nodes/ /comfyui/custom_nodes/
+
 RUN chmod +x /start.sh
 
 EXPOSE 8188
