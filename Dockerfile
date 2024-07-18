@@ -15,9 +15,6 @@ RUN apt-get update && apt-get install -y \
     git \
     wget
 
-RUN chmod +x /timestamp.sh
-CMD /timestamp.sh
-
 # Clean up to reduce image size
 RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
