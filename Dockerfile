@@ -23,7 +23,7 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI.git /comfyui
 
 # Change working directory to ComfyUI
 WORKDIR /comfyui
-COPY auto_configure.py .
+
 # Install ComfyUI dependencies
 RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 \
     && pip3 install --no-cache-dir xformers==0.0.21 \
@@ -44,6 +44,7 @@ WORKDIR /
 # Add the start and the handler
 ADD start.sh  ./
 ADD checkpoints/ /comfyui/models/checkpoints
+ADD auto_configure.py /comfyui/
 
 RUN chmod +x /start.sh
 
