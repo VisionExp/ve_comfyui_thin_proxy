@@ -14,7 +14,7 @@ def download_file(url):
         print(f"Failed to download file. Status code: {response.status_code}")
 
 
-url = "https://raw.githubusercontent.com/VisionExp/ve_comfy_custon_nodes_list/main/nodes_list.txt"
+url = "https://raw.githubusercontent.com/VisionExp/ve_comfy_custom_nodes_list/main/nodes_list.txt"
 custom_extensions = download_file(url)
 print(custom_extensions)
 subprocess.run(['git', 'lfs', 'install'])
