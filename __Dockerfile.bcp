@@ -8,19 +8,20 @@ ENV PIP_PREFER_BINARY=1
 # Ensures output from python is printed immediately to the terminal without buffering
 ENV PYTHONUNBUFFERED=1
 
-# Install Python, git and other necessary tools, then clean up
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# Install Python, git and other necessary tools
+RUN apt-get update && apt-get install -y \
     python3.10 \
     python3-pip \
     git \
-    wget \
-    && apt-get autoremove -y \
-    && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/*
+    wget
 
-# Clone ComfyUI repository and change working directory to ComfyUI
+# Clean up to reduce image size
+RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
+
+# Clone ComfyUI repository
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git /comfyui
 
+# Change working directory to ComfyUI
 WORKDIR /comfyui
 
 # Install ComfyUI dependencies
@@ -28,28 +29,25 @@ RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https:/
     && pip3 install --no-cache-dir xformers==0.0.21 \
     && pip3 install --no-cache-dir -r requirements.txt
 
-# Clone additional repositories
-RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git /comfyui/custom_nodes/ComfyUI-Manager \
-    && git clone https://github.com/VisionExp/ve_custom_comfyui_nodes.git /comfyui/custom_nodes/ve_custom_comfyui_nodes
-
-# Install additional dependencies for ComfyUI-Manager
-WORKDIR /comfyui/custom_nodes/ComfyUI-Manager
-RUN pip3 install --no-cache-dir -r requirements.txt
-
-# Set working directory back to root
 WORKDIR /
 
-# Add files
 COPY timestamp.txt .
-ADD start.sh ./
+
+RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git /comfyui/custom_nodes/ComfyUI-Manager
+RUN git clone https://github.com/VisionExp/ve_custom_comfyui_nodes.git /comfyui/custom_nodes/ve_custom_comfyui_nodes
+
+WORKDIR /comfyui/custom_nodes/ComfyUI-Manager
+
+RUN pip3 install -r requirements.txt
+
+WORKDIR /
+# Add the start and the handler
+ADD start.sh  ./
 ADD checkpoints/ /comfyui/models/checkpoints
 ADD auto_configure.py /comfyui/
 
-# Make start script executable
 RUN chmod +x /start.sh
 
-# Expose port
 EXPOSE 8188
-
 # Start the container
 CMD /start.sh
