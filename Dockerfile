@@ -43,7 +43,7 @@ WORKDIR /
 COPY timestamp.txt .
 ADD start.sh ./
 ADD checkpoints/ /comfyui/models/checkpoints
-ADD auto_configure.py /comfyui/
+ADD auto_configure_thin.py /comfyui/
 
 # Make start script executable
 RUN chmod +x /start.sh
