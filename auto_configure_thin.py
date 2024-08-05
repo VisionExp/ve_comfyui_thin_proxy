@@ -20,6 +20,7 @@ def get_text_from_file(url, as_array):
             items = [item.strip() for item in response_string.split(',')]
             return items
         else:
+
             if is_valid_json(response_string):
                 return json.loads(response_string)
             else:
@@ -33,13 +34,14 @@ def create_empty_file(name):
     if os.path.exists(name):
         print(f"File '{name}' already exists. Skipping download.")
     else:
-        with open(name, 'w') as file:
-            pass
-        print(f"File {name} successfully created ")
+        if name:
+            with open(name, 'w') as file:
+                pass
+            print(f"File {name} successfully created ")
 
 
 nodes_url = "https://raw.githubusercontent.com/VisionExp/ve_comfy_custom_nodes_list/main/nodes_list.txt"
-controlnet_url = "https://raw.githubusercontent.com/VisionExp/ve_comfy_custom_nodes_list/main/controlnet_list_thin.txt"
+controlnet_url = "https://raw.githubusercontent.com/VisionExp/ve_comfy_custom_nodes_list/main/controlnet_list_for_thin.txt"
 clip_vision_url = "https://raw.githubusercontent.com/VisionExp/ve_comfy_custom_nodes_list/main/clip_vision_list.txt"
 loras_url = "https://raw.githubusercontent.com/VisionExp/ve_comfy_custom_nodes_list/main/loras_list.txt"
 models_url = "https://raw.githubusercontent.com/VisionExp/ve_comfy_custom_nodes_list/main/models_list.txt"
@@ -47,7 +49,7 @@ upscale_models_url = "https://raw.githubusercontent.com/VisionExp/ve_comfy_custo
 ip_adapter_url = "https://raw.githubusercontent.com/VisionExp/ve_comfy_custom_nodes_list/main/ip_adapter.txt"
 
 custom_nodes_list = get_text_from_file(nodes_url, as_array=True)
-controlnet_list = get_text_from_file(controlnet_url, as_array=False)
+controlnet_list = get_text_from_file(controlnet_url, as_array=True)
 clip_vision_list = get_text_from_file(clip_vision_url, as_array=False)
 loras_list = get_text_from_file(loras_url, as_array=False)
 models_list = get_text_from_file(models_url, as_array=False)
@@ -65,12 +67,10 @@ for repo_url in custom_nodes_list:
 print(':::Loading controlnet models')
 os.chdir(script_root)
 os.chdir("models/controlnet")
-
-for folder_name, files in controlnet_list:
-    os.mkdir(folder_name)
-    os.chdir(folder_name)
-    for filename in files:
-        create_empty_file(filename)
+os.mkdir('ControlNet-v1-1')
+os.chdir('ControlNet-v1-1')
+for filename in controlnet_list:
+    create_empty_file(filename)
 
 
 print(':::Loading models')
