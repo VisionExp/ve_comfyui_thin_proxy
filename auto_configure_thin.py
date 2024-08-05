@@ -67,7 +67,8 @@ for repo_url in custom_nodes_list:
 print(':::Loading controlnet models')
 os.chdir(script_root)
 os.chdir("models/controlnet")
-os.mkdir('ControlNet-v1-1')
+if not os.path.exists('ControlNet-v1-1'):
+    os.mkdir('ControlNet-v1-1')
 os.chdir('ControlNet-v1-1')
 for filename in controlnet_list:
     create_empty_file(filename)
@@ -94,7 +95,8 @@ for url, filename in upscale_models_list.items():
 print(':::Loading IPAdapter model')
 os.chdir(script_root)
 os.chdir('models')
-os.mkdir("ipadapter")
+if not os.path.exists('ipadapter'):
+    os.mkdir("ipadapter")
 os.chdir("models/ipadapter")
 for repo_url in ip_adapter_list:
     subprocess.run(['git', 'clone', repo_url])
