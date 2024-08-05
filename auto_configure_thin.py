@@ -39,7 +39,7 @@ def create_empty_file(name):
 
 
 nodes_url = "https://raw.githubusercontent.com/VisionExp/ve_comfy_custom_nodes_list/main/nodes_list.txt"
-controlnet_url = "https://raw.githubusercontent.com/VisionExp/ve_comfy_custom_nodes_list/main/controlnet_list.txt"
+controlnet_url = "https://raw.githubusercontent.com/VisionExp/ve_comfy_custom_nodes_list/main/controlnet_list_thin.txt"
 clip_vision_url = "https://raw.githubusercontent.com/VisionExp/ve_comfy_custom_nodes_list/main/clip_vision_list.txt"
 loras_url = "https://raw.githubusercontent.com/VisionExp/ve_comfy_custom_nodes_list/main/loras_list.txt"
 models_url = "https://raw.githubusercontent.com/VisionExp/ve_comfy_custom_nodes_list/main/models_list.txt"
@@ -47,7 +47,7 @@ upscale_models_url = "https://raw.githubusercontent.com/VisionExp/ve_comfy_custo
 ip_adapter_url = "https://raw.githubusercontent.com/VisionExp/ve_comfy_custom_nodes_list/main/ip_adapter.txt"
 
 custom_nodes_list = get_text_from_file(nodes_url, as_array=True)
-controlnet_list = get_text_from_file(controlnet_url, as_array=True)
+controlnet_list = get_text_from_file(controlnet_url, as_array=False)
 clip_vision_list = get_text_from_file(clip_vision_url, as_array=False)
 loras_list = get_text_from_file(loras_url, as_array=False)
 models_list = get_text_from_file(models_url, as_array=False)
@@ -62,12 +62,16 @@ os.chdir("custom_nodes")
 for repo_url in custom_nodes_list:
     subprocess.run(['git', 'clone', repo_url])
 
-# print(':::Loading controlnet models')
-# os.chdir(script_root)
-# os.chdir("models/controlnet")
-# for repo_url in controlnet_list:
-#     subprocess.run(['git', 'remote', 'set-url', 'origin', f'git@hf.co:{repo_url}'])
-#     subprocess.run(['git', 'clone', repo_url])
+print(':::Loading controlnet models')
+os.chdir(script_root)
+os.chdir("models/controlnet")
+
+for folder_name, files in controlnet_list:
+    os.mkdir(folder_name)
+    os.chdir(folder_name)
+    for filename in files:
+        create_empty_file(filename)
+
 
 print(':::Loading models')
 os.chdir(script_root)
@@ -87,11 +91,13 @@ os.chdir("models/upscale_models")
 for url, filename in upscale_models_list.items():
     create_empty_file(filename)
 
-# print(':::Loading IPAdapter model')
-# os.chdir(script_root)
-# os.chdir("custom_nodes/ComfyUI_IPAdapter_plus/models")
-# for repo_url in ip_adapter_list:
-#     subprocess.run(['git', 'clone', repo_url])
+print(':::Loading IPAdapter model')
+os.chdir(script_root)
+os.chdir('models')
+os.mkdir("ipadapter")
+os.chdir("models/ipadapter")
+for repo_url in ip_adapter_list:
+    subprocess.run(['git', 'clone', repo_url])
 
 print(':::Loading CLIP Vision')
 os.chdir(script_root)
